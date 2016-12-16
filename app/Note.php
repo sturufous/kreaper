@@ -14,6 +14,7 @@ class Note extends Model
 		return $this->belongsTo(Card::class);
 	}
 	
+	// Testing new branch
 	function user() {
 		
 		return $this->belongsTo(User::class);
