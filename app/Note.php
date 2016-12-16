@@ -8,6 +8,7 @@ class Note extends Model
 {
 	protected $fillable = ['body', 'user_id'];
 	
+	// Testing git
 	function card() {
 		
 		return $this->belongsTo(Card::class);
