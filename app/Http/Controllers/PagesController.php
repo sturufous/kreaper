@@ -18,8 +18,6 @@ class PagesController extends BaseController
 		
 		$test = App::make('blage');
 		$test2 = App::make('blage');
-		var_dump($test);
-		var_dump($test2);
 				
 		return view('welcome');
 	}
