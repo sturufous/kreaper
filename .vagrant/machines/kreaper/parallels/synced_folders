@@ -1,0 +1,1 @@
+{"parallels":{"/home/vagrant/kreaper":{"type":null,"mount_options":[],"guestpath":"/home/vagrant/kreaper","hostpath":"/Users/stuartmorse/workspace/kreaper","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"/Users/stuartmorse/workspace/kreaper","disabled":false,"__vagrantfile":true}}}
