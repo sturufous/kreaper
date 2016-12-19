@@ -11,6 +11,6 @@ class CardSeeder extends Seeder
      */
     public function run()
     {
-        //
+        // My new seeder
     }
 }
