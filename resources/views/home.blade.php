@@ -14,8 +14,12 @@
                 <div class="panel-body">
                     You are logged in!
                 </div>
-				{{ dump(Auth::user()) }}
             </div>
+        </div>
+        <div style="clear:both">
+        	@foreach ($data->message->body->artist_list as $band)
+                <li>{{ $band->artist->artist_name }}</li>
+            @endforeach
         </div>
     </div>
 </div>

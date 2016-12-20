@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
+use Storage\MusixmatchMusicRepository;
 
 class HomeController extends Controller
 {
@@ -23,6 +26,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+		$repo = new MusixmatchMusicRepository();
+		$bmatch = $repo->find('Rush');
+    	//dump($jsonObj);
+        return view('home')->with(['data' => $bmatch]);
     }
 }
