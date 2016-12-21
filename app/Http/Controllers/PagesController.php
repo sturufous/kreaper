@@ -12,14 +12,14 @@ class StuClass {
 class PagesController extends BaseController
 {
 	function home() {
-		App::singleton('blage', function() {
-			return new StuClass();
-		});
+		//App::singleton('blage', function() {
+		//	return new StuClass();
+		//});
 		
-		$test = App::make('blage');
-		$test2 = App::make('blage');
+		//$test = App::make('blage');
+		//$test2 = App::make('blage');
 				
-		return view('welcome');
+		return view('home');
 	}
 	
 	function about() {

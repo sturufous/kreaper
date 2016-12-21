@@ -10,7 +10,7 @@
 				<h1>This is the welcome page</h1>
 							
 				<ul class="list-group">
-					<a class="list-group-item" href="/cards">List my Cards</a>
+					<a class="list-group-item" href="/cards">Search Bands by name</a>
 				</ul>
 				
 			</div>

@@ -3,6 +3,7 @@ namespace Storage;
 
 interface MusicRepository {
 	 
-	public function find($id);
-
+	public function findArtist($artistName);
+	public function findAlbums($artistId);
+	
 }

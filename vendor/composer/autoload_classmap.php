@@ -542,6 +542,7 @@ return array(
     'SebastianBergmann\\Version' => $vendorDir . '/sebastian/version/src/Version.php',
     'Storage\\MusicRepository' => $baseDir . '/app/lib/Storage/MusicRepository.php',
     'Storage\\MusixmatchMusicRepository' => $baseDir . '/app/lib/Storage/MusixmatchMusicRepository.php',
+    'Storage\\StorageServiceProvider' => $baseDir . '/app/lib/Storage/StorageServiceProvider.php',
     'TestCase' => $baseDir . '/tests/TestCase.php',
     'Text_Template' => $vendorDir . '/phpunit/php-text-template/src/Template.php',
 );
