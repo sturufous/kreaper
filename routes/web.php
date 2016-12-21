@@ -17,7 +17,9 @@ Route::group(['middleware' => ['web','auth']], function() {
 	Route::get('/', 'HomeController@index');
 	Route::get('bandentry', 'HomeController@bandEntry');
 	Route::post('bandlist', 'HomeController@bandList');
-	Route::get('extract/{artist_id}', 'HomeController@extractAlbums');
+	Route::get('albumlist/{artist_id}', 'HomeController@albumList');
+	Route::get('tracklist/{album_id}', 'HomeController@trackList');
+	Route::get('showlyrics/{track_id}', 'HomeController@getLyrics');
 });
 
 Route::auth();
