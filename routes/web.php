@@ -14,19 +14,12 @@
 */
 
 Route::group(['middleware' => ['web','auth']], function() {
-	Route::get('/', 'PagesController@home');
-	Route::get('/about', 'PagesController@about');
-	Route::get('/cards', 'CardsController@index');
-	Route::get('/cards/{card}', 'CardsController@show');
-	Route::post('/cards/{card}/notes', 'NotesController@store');
-	Route::get('/notes/{note}/edit', 'NotesController@edit');
-	Route::patch('/notes/{note}', 'NotesController@update');
-	Route::get('/begin', function () {
-		return redirect('/');
-	});
+	Route::get('/', 'HomeController@index');
+	Route::get('bandentry', 'HomeController@bandEntry');
+	Route::post('bandlist', 'HomeController@bandList');
+	Route::get('extract/{artist_id}', 'HomeController@extractAlbums');
 });
 
+Route::auth();
 
-Auth::routes();
 
-Route::get('/home', 'HomeController@index');
