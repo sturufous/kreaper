@@ -66,4 +66,19 @@ class MusixmatchMusicRepository implements MusicRepository {
 		$jsonObj = json_decode($result->getBody());
 		return $jsonObj;
 	}
+	
+	public function getTopTen()
+	{
+		$client = new Client(); //GuzzleHttp\Client
+		$result = $client->request('GET', MUSIXMATCH_BASE_URL.'chart.artists.get', [
+				'query' => ['apikey' => '5267dd058c1449820f5f2c119b88c8b8',
+						'page_size' => '10',
+						'country' => 'ca'
+				]
+		]);
+	
+		$jsonObj = json_decode($result->getBody());
+		return $jsonObj;
+	}
+	
 }
