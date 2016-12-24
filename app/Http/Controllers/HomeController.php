@@ -30,7 +30,10 @@ class HomeController extends Controller
 	 */
 	public function index()
 	{
-		return view('home');
+		$repo = new MusixmatchMusicRepository();
+		$bmatch = $this->music->getTopTen();
+		
+		return view('lists.topten')->with(['data' => $bmatch]);
 	}
 	
 	/**

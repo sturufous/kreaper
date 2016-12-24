@@ -20,7 +20,8 @@ Route::group(['middleware' => ['web','auth']], function() {
 	Route::get('albumlist/{artist_id}', 'HomeController@albumList');
 	Route::get('tracklist/{album_id}', 'HomeController@trackList');
 	Route::get('showlyrics/{track_id}', 'HomeController@getLyrics');
-});
+	Route::get('gettopten', 'HomeController@getTopTen');
+	});
 
 Route::auth();
 
