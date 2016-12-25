@@ -7,19 +7,23 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use Storage\MusixmatchMusicRepository;
 use Storage\MusicRepository as Music;
+use Storage\ImageRepository as Images;
+use Storage\FantvImageRepository;
 
 class HomeController extends Controller
 {
 	private $music;
+	private $images;
 	
 	/**
      * Create a new controller instance.
      *
      * @return void
      */
-	public function __construct(Music $music)
+	public function __construct(Music $music, Images $images)
 	{
 		$this->music = $music;
+		$this->images = $images;
         $this->middleware('auth');
 	}
 	
@@ -30,10 +34,27 @@ class HomeController extends Controller
 	 */
 	public function index()
 	{
-		$repo = new MusixmatchMusicRepository();
 		$bmatch = $this->music->getTopTen();
 		
-		return view('lists.topten')->with(['data' => $bmatch]);
+		return view('lists.topten')->with(['data' => $bmatch, 'controller' => $this]);
+	}
+	
+	public function getBandImage($mbid)
+	{
+		$bimage = "/images/blank.png";
+		$bmatch = null;
+		$repo = new FantvImageRepository();
+		if($mbid != '')
+		{
+			$bmatch = $this->images->findArtist($mbid);
+		}
+		
+		if($bmatch != null && isset($bmatch->artistbackground))
+		{
+			$bimage = $bmatch->artistbackground[0]->url;
+		}
+		
+		return $bimage;
 	}
 	
 	/**

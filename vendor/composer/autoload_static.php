@@ -844,6 +844,8 @@ class ComposerStaticInit9fb39f0133ceadd2b36e21bbb2edd329
         'SebastianBergmann\\RecursionContext\\InvalidArgumentException' => __DIR__ . '/..' . '/sebastian/recursion-context/src/InvalidArgumentException.php',
         'SebastianBergmann\\ResourceOperations\\ResourceOperations' => __DIR__ . '/..' . '/sebastian/resource-operations/src/ResourceOperations.php',
         'SebastianBergmann\\Version' => __DIR__ . '/..' . '/sebastian/version/src/Version.php',
+        'Storage\\FantvImageRepository' => __DIR__ . '/../..' . '/app/lib/Storage/FantvImageRepository.php',
+        'Storage\\ImageRepository' => __DIR__ . '/../..' . '/app/lib/Storage/ImageRepository.php',
         'Storage\\MusicRepository' => __DIR__ . '/../..' . '/app/lib/Storage/MusicRepository.php',
         'Storage\\MusixmatchMusicRepository' => __DIR__ . '/../..' . '/app/lib/Storage/MusixmatchMusicRepository.php',
         'Storage\\StorageServiceProvider' => __DIR__ . '/../..' . '/app/lib/Storage/StorageServiceProvider.php',
