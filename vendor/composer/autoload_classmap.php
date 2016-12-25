@@ -540,6 +540,8 @@ return array(
     'SebastianBergmann\\RecursionContext\\InvalidArgumentException' => $vendorDir . '/sebastian/recursion-context/src/InvalidArgumentException.php',
     'SebastianBergmann\\ResourceOperations\\ResourceOperations' => $vendorDir . '/sebastian/resource-operations/src/ResourceOperations.php',
     'SebastianBergmann\\Version' => $vendorDir . '/sebastian/version/src/Version.php',
+    'Storage\\FantvImageRepository' => $baseDir . '/app/lib/Storage/FantvImageRepository.php',
+    'Storage\\ImageRepository' => $baseDir . '/app/lib/Storage/ImageRepository.php',
     'Storage\\MusicRepository' => $baseDir . '/app/lib/Storage/MusicRepository.php',
     'Storage\\MusixmatchMusicRepository' => $baseDir . '/app/lib/Storage/MusixmatchMusicRepository.php',
     'Storage\\StorageServiceProvider' => $baseDir . '/app/lib/Storage/StorageServiceProvider.php',

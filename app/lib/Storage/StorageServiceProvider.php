@@ -11,5 +11,10 @@ class StorageServiceProvider extends ServiceProvider {
 			'Storage\MusicRepository',
 			'Storage\MusixmatchMusicRepository'
 		);
+		
+		$this->app->bind(
+			'Storage\ImageRepository',
+			'Storage\FantvImageRepository'
+		);
 	}
 }
