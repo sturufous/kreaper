@@ -6,7 +6,7 @@
         <div class="row">
 
             <div class="col-md-3">
-                <p class="lead">MusixMatch Top 9</p>
+                <p class="lead">MusixMatch Top 10</p>
                 <div class="list-group">
                     <a href="/bandentry" class="list-group-item">Search by band</a>
                     <a href="#" class="list-group-item">Category 2</a>
@@ -51,7 +51,7 @@
 				    @foreach ($data->message->body->artist_list as $band)
                     <div class="col-sm-6 col-lg-6 col-md-6">
 						<div class="thumbnail">
-                            <img src="http://placehold.it/320x150" alt="">
+                            <img src="images/blank.png" alt="">
                             <div class="caption">
                                 <h4><a target="_blank" href="{{ $band->artist->artist_share_url }}">{{ $band->artist->artist_name }}</a></h4>
                                 <p>Genre: {{ $band->artist->primary_genres->music_genre_list[0]->music_genre->music_genre_name or 'Default'}}</a></p>
