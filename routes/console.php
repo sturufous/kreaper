@@ -1,6 +1,13 @@
 <?php
 
 use Illuminate\Foundation\Inspiring;
+use Illuminate\Http\Request;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
+use Storage\MusixmatchMusicRepository;
+use Storage\MusicRepository as Music;
+use Storage\ImageRepository as Images;
+use Storage\FantvImageRepository;
 
 /*
 |--------------------------------------------------------------------------

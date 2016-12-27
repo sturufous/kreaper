@@ -312,6 +312,7 @@ class ComposerStaticInit9fb39f0133ceadd2b36e21bbb2edd329
     public static $classMap = array (
         'CardSeeder' => __DIR__ . '/../..' . '/database/seeds/CardSeeder.php',
         'CreateCardsTable' => __DIR__ . '/../..' . '/database/migrations/2016_11_15_223820_create_cards_table.php',
+        'CreateKrLyricsTable' => __DIR__ . '/../..' . '/database/migrations/2016_12_26_222455_create_lyrics_table.php',
         'CreateNotesTable' => __DIR__ . '/../..' . '/database/migrations/2016_11_16_222040_create_notes_table.php',
         'CreatePasswordResetsTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
         'CreateUsersTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_000000_create_users_table.php',
