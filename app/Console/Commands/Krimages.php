@@ -51,7 +51,7 @@ class Krimages extends Command
     			getBandImage($images, $band->artist->artist_mbid),
     			$band->artist->artist_mbid
     		);
-    		echo getBandImage($images, $band->artist->artist_mbid)."<br>";
+    		//echo getBandImage($images, $band->artist->artist_mbid)."<br>";
     	}
     }
 }

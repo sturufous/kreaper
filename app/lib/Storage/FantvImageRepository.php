@@ -63,15 +63,13 @@ class FantvImageRepository implements ImageRepository {
 				
 				$client = new Client();
 				$response = $client->request('GET', $imageUrl, ['connect_timeout' => 10]);
-				if ($response->getBody()->isReadable()) {
-					if ($response->getStatusCode()==200) {
-						$this->saveBandImage($mbid, $ext, $response);
-						return true;
-					}
-					else
-					{
-						copy(FANTV_IMAGE_DIR.'blank.jpg', FANTV_IMAGE_DIR.$mbid.'.jpg');
-					}
+				if ($this->isGoodResponse($response)) 
+				{
+					$this->saveBandImage($mbid, $ext, $response);
+				}
+				else
+				{
+					copy(FANTV_IMAGE_DIR.'blank.jpg', FANTV_IMAGE_DIR.$mbid.'.jpg');
 				}
 			}
 		} catch (Exception $e) {
@@ -82,9 +80,14 @@ class FantvImageRepository implements ImageRepository {
 	public function saveBandImage($mbid, $ext, $response)
 	{
 		$fileName = FANTV_IMAGE_DIR.$mbid.'.'.$ext;
-		if(!file_exists($filename))
+		if(!file_exists($fileName))
 		{
 			file_put_contents(FANTV_IMAGE_DIR.$mbid.'.'.$ext, $response->getBody());
 		}
+	}
+	
+	public function isGoodResponse($response)
+	{
+		return $response->getBody()->isReadable() && $response->getStatusCode()==200;
 	}
 }
