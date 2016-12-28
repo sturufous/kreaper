@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Client;
 use Storage\MusixmatchMusicRepository;
 use Storage\MusicRepository as Music;
 use Storage\ImageRepository as Images;
@@ -37,24 +35,6 @@ class HomeController extends Controller
 		$bmatch = $this->music->getTopTen();
 		
 		return view('lists.topten')->with(['data' => $bmatch, 'controller' => $this]);
-	}
-	
-	public function getBandImage($mbid)
-	{
-		$bimage = "/images/blank.png";
-		$bmatch = null;
-		$repo = new FantvImageRepository();
-		if($mbid != '')
-		{
-			$bmatch = $this->images->findArtist($mbid);
-		}
-		
-		if($bmatch != null && isset($bmatch->artistbackground))
-		{
-			$bimage = $bmatch->artistbackground[0]->url;
-		}
-		
-		return $bimage;
 	}
 	
 	/**

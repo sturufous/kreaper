@@ -25,4 +25,6 @@ Route::group(['middleware' => ['web','auth']], function() {
 
 Route::auth();
 
-
+Route::get('/artisan', function () {
+	$exitCode = Artisan::call('kreaper:getbandpics', []);
+});

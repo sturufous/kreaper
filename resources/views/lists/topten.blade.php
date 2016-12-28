@@ -51,7 +51,7 @@
 @foreach ($data->message->body->artist_list as $band)
 					<div class="col-sm-6 col-lg-6 col-md-6">
 						<div class="thumbnail">
-                            <img src="{{ $controller->getBandImage($band->artist->artist_mbid) }}" alt="" style="width:332px; height:150px">
+                            <img src="images/bands/{{ $band->artist->artist_mbid }}.jpg" alt="" style="width:332px; height:150px">
                             <div class="caption">
                                 <h4><a target="_blank" href="{{ $band->artist->artist_share_url }}">{{ $band->artist->artist_name }}</a></h4>
                                 <p>Genre: {{ $band->artist->primary_genres->music_genre_list[0]->music_genre->music_genre_name or 'Default'}}</a></p>
