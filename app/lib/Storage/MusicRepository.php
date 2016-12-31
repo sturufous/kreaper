@@ -7,5 +7,6 @@ interface MusicRepository {
 	public function findAlbums($artistId);
 	public function findTracks($trackId);
 	public function getTopTen();
+	public function getArtist($artistId);
 	
 }

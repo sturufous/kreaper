@@ -55,7 +55,6 @@ class HomeController extends Controller
 	
     public function bandList(Request $request)
     {
-		$repo = new MusixmatchMusicRepository();
 		$bandName = $request->input('bandname');
 		$bmatch = $this->music->findArtist($bandName);
         return view('lists.bandlist')->with(['data' => $bmatch, 'band' => $bandName]);
@@ -63,21 +62,20 @@ class HomeController extends Controller
     
     public function albumList(Request $request, $artistId)
     {
-    	$repo = new MusixmatchMusicRepository();
+    	$artist = $this->music->getArtist($artistId);
+    	$request->session()->put('artist_name', $artist->message->body->artist->artist_name);
     	$lmatch = $this->music->findAlbums($artistId);
     	return view('lists.albumlist')->with(['data' => $lmatch]);
     }
     
     public function trackList(Request $request, $albumId)
     {
-    	$repo = new MusixmatchMusicRepository();
     	$tmatch = $this->music->findTracks($albumId);
     	return view('lists.tracklist')->with(['data' => $tmatch]);
     }
     
     public function getLyrics(Request $request, $trackId)
     {
-    	$repo = new MusixmatchMusicRepository();
     	$lmatch = $this->music->getLyrics($trackId);
     	$lfixed = str_replace(["\r\n", "\r", "\n"], "<br/>", $lmatch->message->body->lyrics->lyrics_body);
     	return view('lists.lyrics')->with(['data' => $lfixed]);

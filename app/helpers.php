@@ -12,7 +12,6 @@ function getBandImage($images, $mbid)
 {
 	$bimage = "/images/blank.png";
 	$bmatch = null;
-	$repo = new FantvImageRepository();
 	if($mbid != '')
 	{
 		$bmatch = $images->findArtist($mbid);

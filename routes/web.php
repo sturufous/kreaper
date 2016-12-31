@@ -21,10 +21,20 @@ Route::group(['middleware' => ['web','auth']], function() {
 	Route::get('tracklist/{album_id}', 'HomeController@trackList');
 	Route::get('showlyrics/{track_id}', 'HomeController@getLyrics');
 	Route::get('gettopten', 'HomeController@getTopTen');
-	});
+});
 
 Route::auth();
 
-Route::get('/artisan', function () {
-	$exitCode = Artisan::call('kreaper:getbandpics', []);
+Route::group(['middleware' => ['web']], function() {
+	Route::get('/artisan/getbandpics', function () {
+		Artisan::call('kreaper:getbandpics', []);
+	});
+	
+	Route::get('/artisan/loadlyrics', function () {
+		Artisan::call('kreaper:loadlyrics', []);
+	});
+	
+	Route::get('/artisan/viewrelations', function () {
+		Artisan::call('kreaper:viewrelations', []);
+	});
 });
