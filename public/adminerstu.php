@@ -20,7 +20,7 @@ function adminer_object() {
 
 		function database() {
 			// database name, will be escaped by Adminer
-			return 'software';
+			return '/home/vagrant/kreaper/public/mxm_dataset.db';
 		}
 
 		function login($login, $password) {

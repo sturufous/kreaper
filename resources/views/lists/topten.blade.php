@@ -4,16 +4,7 @@
     <div class="container">
 
         <div class="row">
-
-            <div class="col-md-3">
-                <p class="lead">MusixMatch Top 10</p>
-                <div class="list-group">
-                    <a href="/bandentry" class="list-group-item">Search by band</a>
-                    <a href="#" class="list-group-item">Category 2</a>
-                    <a href="#" class="list-group-item">Category 3</a>
-                </div>
-            </div>
-
+            @include('layouts.sidenav')
             <div class="col-md-9">
 
                 <div class="row carousel-holder">
@@ -50,6 +41,7 @@
                 <div class="row">
 @foreach ($data->message->body->artist_list as $band)
 					<div class="col-sm-6 col-lg-6 col-md-6">
+						<input type="hidden" value="{{ $band->artist->artist_mbid }}">
 						<div class="thumbnail">
                             <img src="images/bands/{{ $band->artist->artist_mbid }}.jpg" alt="" style="width:332px; height:150px">
                             <div class="caption">

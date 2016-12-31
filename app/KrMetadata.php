@@ -4,10 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Lyrics extends Model
+class KrMetadata extends Model
 {
-	protected $table = 'lyrics';
+	protected $table = 'songs';
 	protected $primaryKey = 'track_id';
 	public $incrementing = false;
-	protected $connection = 'sqlite';
+	protected $connection = 'metadata';
+	public $timestamps = false;
 }

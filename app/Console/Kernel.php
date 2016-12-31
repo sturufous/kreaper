@@ -13,8 +13,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-    	Commands\Krimages::class
-        //
+    	Commands\Krimages::class,
+    	Commands\KrLoadArtists::class,
+    	Commands\KrViewRelations::class
     ];
 
     /**

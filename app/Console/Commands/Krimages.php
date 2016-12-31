@@ -48,10 +48,10 @@ class Krimages extends Command
     	foreach($bmatch->message->body->artist_list as $band)
     	{
     		$images->saveImageLocal(
-    			getBandImage($images, $band->artist->artist_mbid),
+    			$image = getBandImage($images, $band->artist->artist_mbid),
     			$band->artist->artist_mbid
     		);
-    		//echo getBandImage($images, $band->artist->artist_mbid)."<br>";
+    		echo $image."<br>";
     	}
     }
 }

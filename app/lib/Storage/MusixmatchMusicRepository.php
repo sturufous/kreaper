@@ -27,11 +27,22 @@ class MusixmatchMusicRepository implements MusicRepository {
 	public function findArtist($artistName)
 	{
 		$jsonObj = $this->invoke('GET', 'artist.search', [
-						'page_size' => '100',
-						'q_artist' => $artistName
-				]
+				'page_size' => '100',
+				'q_artist' => $artistName
+			]
 		);
 		
+		return $jsonObj;
+	}
+	
+	public function getArtist($artistId)
+	{
+		$jsonObj = $this->invoke('GET', 'artist.get', [
+				'page_size' => '100',
+				'artist_id' => $artistId
+			]
+		);
+	
 		return $jsonObj;
 	}
 	

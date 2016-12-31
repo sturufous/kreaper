@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'sqlite'),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +52,13 @@ return [
             'prefix' => '',
         ],
 
-        'mysql' => [
+    	'metadata' => [
+    		'driver' => 'sqlite',
+    		'database' => env('sqlite', database_path('track_metadata.db')),
+    		'prefix' => '',
+    	],
+    		
+    	'mysql' => [
             'driver' => 'mysql',
             'host' => env('DB_HOST', 'localhost'),
             'port' => env('DB_PORT', '3306'),
