@@ -7,7 +7,7 @@
         <div class="col-md-9">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                	<h2>Lyrics for this track</h2>
+                	<h2>{{ Request::session()->get('track_name') }}</h2>
                 </div>
 		        <div>
 					<ul class="list-unstyled">

@@ -30,6 +30,7 @@ class CreateMetadataTable extends Migration
     		$table->integer('shs_work', false, true);
     				
     		$table->primary('track_id');
+    		$table->index('artist_id', 'artist_id_index');
     	});
     }
 
