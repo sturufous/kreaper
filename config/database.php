@@ -52,12 +52,6 @@ return [
             'prefix' => '',
         ],
 
-    	'metadata' => [
-    		'driver' => 'sqlite',
-    		'database' => env('sqlite', database_path('track_metadata.db')),
-    		'prefix' => '',
-    	],
-    		
     	'mysql' => [
             'driver' => 'mysql',
             'host' => env('DB_HOST', 'localhost'),

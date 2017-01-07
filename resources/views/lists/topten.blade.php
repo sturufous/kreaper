@@ -45,17 +45,21 @@
 						<div class="thumbnail">
                             <img src="images/bands/{{ $band->artist->artist_mbid }}.jpg" alt="" style="width:332px; height:150px">
                             <div class="caption">
-                                <h4><a target="_blank" href="{{ $band->artist->artist_share_url }}">{{ $band->artist->artist_name }}</a></h4>
+                                <h4><a target="_blank" href="{{ $band->artist->artist_share_url }}" target="_blank">{{ $band->artist->artist_name }}</a>
+                                @if ($band->artist->artist_twitter_url != '')
+                                	<a href="{{ $band->artist->artist_twitter_url }}" target="_blank">
+    								    <img src="images/twitter.png" class="pull-right" style="width:30px; height:29px">
+    								</a>
+    							@else
+  									<img src="images/twitter-grey.png" class="pull-right" style="width:30px; height:29px">  							
+    							@endif
+                                </h4>
                                 <p>Genre: {{ $band->artist->primary_genres->music_genre_list[0]->music_genre->music_genre_name or 'Default'}}</a></p>
                             </div>
                             <div class="ratings">
                                 <p class="pull-right">15 reviews</p>
                                 <p>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
+                                	{{ showGlyphs($band) }}
                                 </p>
                             </div>
                         </div>

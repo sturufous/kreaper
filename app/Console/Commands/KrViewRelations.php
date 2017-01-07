@@ -45,7 +45,9 @@ class KrViewRelations extends Command
     public function handle()
     {
     	$columns = Schema::getColumnListing('songs');
+    	$this->chunkCount = 0;
     	KrMetadata::chunk(1000, function ($songs) {
+    		echo $this->chunkCount * 1000 . "\n";
     		foreach ($songs as $song) {
     			$columns = Schema::getColumnListing('songs');
     			$metadata2 = new KrMetadata2();
@@ -55,6 +57,7 @@ class KrViewRelations extends Command
     				$idx++;
     			}
     			$metadata2->save();
+    			$this->chunkCount++;
     		}
     	});    	
     }

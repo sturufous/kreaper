@@ -310,6 +310,8 @@ class ComposerStaticInit9fb39f0133ceadd2b36e21bbb2edd329
     );
 
     public static $classMap = array (
+        'AddArtistIdIndex' => __DIR__ . '/../..' . '/database/migrations/2017_01_01_204815_add_artist_id_index.php',
+        'AddMbidSongsIndex' => __DIR__ . '/../..' . '/database/migrations/2017_01_01_235946_add_mbid_songs_index.php',
         'CardSeeder' => __DIR__ . '/../..' . '/database/seeds/CardSeeder.php',
         'CreateMetadataTable' => __DIR__ . '/../..' . '/database/migrations/2016_12_30_152813_create_metadata_table.php',
         'CreatePasswordResetsTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',

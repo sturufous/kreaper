@@ -3,6 +3,7 @@ namespace Storage;
 
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use App\KrMetadata2;
 
 define('MUSIXMATCH_BASE_URL','http://api.musixmatch.com/ws/1.1/');
 define('MUSIXMATHC_API_KEY', '5267dd058c1449820f5f2c119b88c8b8');
@@ -38,8 +39,17 @@ class MusixmatchMusicRepository implements MusicRepository {
 	public function getArtist($artistId)
 	{
 		$jsonObj = $this->invoke('GET', 'artist.get', [
-				'page_size' => '100',
 				'artist_id' => $artistId
+			]
+		);
+	
+		return $jsonObj;
+	}
+	
+	public function getAlbum($albumId)
+	{
+		$jsonObj = $this->invoke('GET', 'album.get', [
+				'album_id' => $albumId
 			]
 		);
 	
@@ -49,7 +59,7 @@ class MusixmatchMusicRepository implements MusicRepository {
 	public function findAlbums($artistId)
 	{
 		$jsonObj = $this->invoke('GET', 'artist.albums.get', [
-				'page_size' => '100',
+				'page_size' => '1000',
 				'artist_id' => $artistId,
 				'g_album_name' => '1',
 				's_release_date' => 'asc'
@@ -65,6 +75,16 @@ class MusixmatchMusicRepository implements MusicRepository {
 				'page_size' => '100',
 				'album_id' => $albumId,
 				'f_has_lyrics' => 'yes'
+			]
+		);
+	
+		return $jsonObj;
+	}
+	
+	public function getTrack($trackId)
+	{
+		$jsonObj = $this->invoke('GET', 'track.get', [
+				'track_id' => $trackId
 			]
 		);
 	
@@ -90,5 +110,60 @@ class MusixmatchMusicRepository implements MusicRepository {
 		);
 	
 		return $jsonObj;
+	}
+	
+	public function isArtistInMSDB($artistMbid)
+	{
+		if($artistMbid != '')
+		{
+			$artist = new KrMetadata2();
+			$matching = $artist->where('artist_mbid', $artistMbid)->get()->count();
+			return $matching > 0 ? true : false;
+		}
+		else 
+		{
+			return false;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param $artist_mbid Artist ID
+	 * @param $release The name of the album
+	 * @return boolean
+	 */
+	
+	public function isAlbumInMSDB($artistMbid, $release)
+	{
+		if($artistMbid != '' && $release != '')
+		{
+			$repo = new KrMetadata2();
+			$matching = $repo->where('artist_mbid', $artistMbid)->where('release', $release)->get()->count();
+			return $matching > 0 ? true : false;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	/**
+	 *
+	 * @param $artist_mbid Artist ID
+	 * @param $release The name of the album
+	 * @return boolean
+	 */
+	
+	public function isTrackInMSDB($artistMbid, $trackName)
+	{
+		if($artistMbid != '' && $trackName != '')
+		{
+			$repo = new KrMetadata2();
+			$matching = $repo->where('artist_mbid', $artistMbid)->where('title', $trackName)->get()->count();
+			return $matching > 0 ? true : false;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }

@@ -24,3 +24,18 @@ function getBandImage($images, $mbid)
 
 	return $bimage;
 }
+
+/**
+ * Displays stars representing the Musixmatch artist_rating for this artist.
+ * 
+ * @param $band Band object from Musixmatch API
+ */
+
+function showGlyphs($band)
+{
+	$rating = $band->artist->artist_rating/10;
+	for($idx=0; $idx<$rating; $idx++)
+	{
+		echo '<span class="glyphicon glyphicon-star"></span>';	
+	}
+}

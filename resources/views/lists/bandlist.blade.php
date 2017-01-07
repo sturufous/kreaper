@@ -11,7 +11,7 @@
                 </div>
 		        <div>
 					<ul class="list-unstyled">
-@foreach ($data->message->body->artist_list as $band)
+@foreach ($data as $band)
                             <a href="/albumlist/{{ $band->artist->artist_id }}" class="list-group-item" style="margin-right:20px;margin-left:20px" alt="{{ $band->artist->artist_mbid }}">{{ $band->artist->artist_name }} <span class="pull-right">{{$band->artist->artist_id}}</span></a>
 @endforeach
 					</ul>
