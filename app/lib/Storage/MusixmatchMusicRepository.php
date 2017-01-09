@@ -3,7 +3,7 @@ namespace Storage;
 
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
-use App\KrMetadata2;
+use App\MSDBSongs;
 
 define('MUSIXMATCH_BASE_URL','http://api.musixmatch.com/ws/1.1/');
 define('MUSIXMATHC_API_KEY', '5267dd058c1449820f5f2c119b88c8b8');
@@ -116,7 +116,7 @@ class MusixmatchMusicRepository implements MusicRepository {
 	{
 		if($artistMbid != '')
 		{
-			$artist = new KrMetadata2();
+			$artist = new MSDBSongs();
 			$matching = $artist->where('artist_mbid', $artistMbid)->get()->count();
 			return $matching > 0 ? true : false;
 		}
@@ -137,7 +137,7 @@ class MusixmatchMusicRepository implements MusicRepository {
 	{
 		if($artistMbid != '' && $release != '')
 		{
-			$repo = new KrMetadata2();
+			$repo = new MSDBSongs();
 			$matching = $repo->where('artist_mbid', $artistMbid)->where('release', $release)->get()->count();
 			return $matching > 0 ? true : false;
 		}
@@ -157,9 +157,23 @@ class MusixmatchMusicRepository implements MusicRepository {
 	{
 		if($artistMbid != '' && $trackName != '')
 		{
-			$repo = new KrMetadata2();
-			$matching = $repo->where('artist_mbid', $artistMbid)->where('title', $trackName)->get()->count();
+			$songs = new MSDBSongs();
+			$matching = $songs->where('artist_mbid', $artistMbid)->where('title', $trackName)->get()->count();
 			return $matching > 0 ? true : false;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	public function getMSDBSong($artistMbid, $trackName)
+	{
+		if($artistMbid != '' && $trackName != '')
+		{
+			$songs = new MSDBSongs();
+			$matching = $songs->where('artist_mbid', $artistMbid)->where('title', $trackName)->first();
+			return $matching;
 		}
 		else
 		{

@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 use App\KrArtists;
 use App\Lyrics;
 use App\KrMetadata;
-use App\KrMetadata2;
+use App\MSDBSongs;
 use DB;
 use Schema;
 
@@ -50,7 +50,7 @@ class KrViewRelations extends Command
     		echo $this->chunkCount * 1000 . "\n";
     		foreach ($songs as $song) {
     			$columns = Schema::getColumnListing('songs');
-    			$metadata2 = new KrMetadata2();
+    			$metadata2 = new MSDBSongs();
     			$idx = 0;
     			foreach($columns as $column) {
     				$metadata2[$columns[$idx]] = $song[$columns[$idx]];

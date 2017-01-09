@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class KrMetadata2 extends Model
+class MSDBSongs extends Model
 {
 	protected $table = 'songs';
 	protected $primaryKey = 'track_id';
