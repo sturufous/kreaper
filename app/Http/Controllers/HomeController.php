@@ -18,6 +18,7 @@ class HomeController extends Controller
      *
      * @return void
      */
+	
 	public function __construct(Music $music, Images $images)
 	{
 		$this->music = $music;
@@ -26,10 +27,11 @@ class HomeController extends Controller
 	}
 	
 	/**
-	 * Show the application dashboard.
+	 * Show the application dashboard containing current top ten Musixmatch bands.
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
+	
 	public function index()
 	{
 		$bmatch = $this->music->getTopTen();
@@ -48,7 +50,7 @@ class HomeController extends Controller
 	}
 	
 	/**
-     * Search for a band in the repository.
+     * Search for a list of bands filtered by the MSDB repository.
      *
      * @return \Illuminate\Http\Response
      */
@@ -70,6 +72,14 @@ class HomeController extends Controller
         return view('lists.bandlist')->with(['data' => $filtered, 'band' => $bandName]);
     }
     
+    /**
+     * Search for album list for band in the Musixmatch repository.
+     *
+     * $request Current HTTP request
+     * $artistId The Musixmatch ID for the band
+     * @return \Illuminate\Http\Response
+     */
+    
     public function albumList(Request $request, $artistId)
     {
     	$artist = $this->music->getArtist($artistId);
@@ -78,10 +88,22 @@ class HomeController extends Controller
     	return view('lists.albumlist')->with(['data' => $lmatch]);
     }
     
+    /**
+     * Search for album list for a band in the MSDB repository.
+     *
+     * $request Current HTTP request
+     * $artistId The Musixmatch ID for the band
+     * @return \Illuminate\Http\Response
+     */
+    
     public function albumListInMSDB(Request $request, $artistId)
     {
     	$artist = $this->music->getArtist($artistId);
     	$request->session()->put('artist_name', $artist->message->body->artist->artist_name);
+    	$request->session()->put('artist_rating', $artist->message->body->artist->artist_rating);
+    	$request->session()->put('artist_country', $artist->message->body->artist->artist_country);
+    	$request->session()->put('artist_twitter', $artist->message->body->artist->artist_twitter_url);
+    	getBandImage($this->music, $artist->message->body->artist->artist_mbid);
     	$amatch = $this->music->findAlbums($artistId);
     	 
     	// Include only albums that are in the MSDB
@@ -93,8 +115,17 @@ class HomeController extends Controller
     			$filtered[] = $album;
     		}
     	}
+    	$request->session()->put('artist_album_count', sizeof($filtered));
     	return view('lists.albumlist')->with(['data' => $filtered]);
     }
+    
+    /**
+     * Search for track list for an album in the MSDB repository.
+     *
+     * $request Current HTTP request
+     * $albumId The Musixmatch Album ID for the band
+     * @return \Illuminate\Http\Response
+     */
     
     public function trackListInMSDB(Request $request, $albumId)
     {
@@ -114,11 +145,27 @@ class HomeController extends Controller
     	return view('lists.tracklist')->with(['data' => $filtered]);
     }
     
+    /**
+     * Search for album list for an band in the Musixmatch repository.
+     *
+     * $request Current HTTP request
+     * $albumId The Musixmatch Album ID for the band
+     * @return \Illuminate\Http\Response
+     */
+    
     public function getAlbum(Request $request, $albumId)
     {
     	$lmatch = $this->music->findAlbums($artistId);
     	return view('lists.albumlist')->with(['data' => $lmatch]);
     }
+    
+    /**
+     * Search for track list for an album in the Musixmatch repository.
+     *
+     * $request Current HTTP request
+     * $albumId The Musixmatch Album ID for the band
+     * @return \Illuminate\Http\Response
+     */
     
     public function trackList(Request $request, $albumId)
     {
@@ -128,10 +175,26 @@ class HomeController extends Controller
     	return view('lists.tracklist')->with(['data' => $tmatch]);
     }
     
+    /**
+     * Search for lyrics for a track in the Musixmatch repository.
+     *
+     * $request Current HTTP request
+     * $trackId The Musixmatch Track ID for the track
+     * @return \Illuminate\Http\Response
+     */
+    
     public function getLyrics(Request $request, $trackId)
     {
     	$track = $this->music->getTrack($trackId);
-    	$request->session()->put('track_name', $track->message->body->track->track_name);
+
+    	// Get the rating data for the song for display above lyrics
+    	$MSDBSong = $this->music->getMSDBSong($track->message->body->track->artist_mbid, $track->message->body->track->track_name);
+    	$familiarity = intval($MSDBSong->artist_familiarity * 100);
+		$hotness = intval($MSDBSong->artist_hotttnesss * 100);
+		$request->session()->put('artist_familiarity', $familiarity);
+		$request->session()->put('artist_hotttnesss', $hotness);
+		
+		$request->session()->put('track_name', $track->message->body->track->track_name);
     	$lmatch = $this->music->getLyrics($trackId);
     	$lfixed = str_replace(["\r\n", "\r", "\n"], "<br/>", $lmatch->message->body->lyrics->lyrics_body);
     	return view('lists.lyrics')->with(['data' => $lfixed]);

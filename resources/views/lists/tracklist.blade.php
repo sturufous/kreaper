@@ -12,7 +12,7 @@
 		        <div>
 					<ul class="list-unstyled">
 @foreach ($data as $track)
-                            <a href="/showlyrics/{{ $track->track->track_id }}" class="list-group-item" style="margin-right:20px;margin-left:20px">{{ $track->track->track_name }} <span class="pull-right">{{$track->track->track_rating}}</span></a>
+                            <a href="/showlyrics/{{ $track->track->track_id }}" class="list-group-item" style="margin-right:20px;margin-left:20px">{{ $track->track->track_name }} <span class="pull-right">{{ showRating($track->track->track_rating, 100) }}</span></a>
 @endforeach
 					</ul>
 				</div>

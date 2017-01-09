@@ -17,7 +17,9 @@
     <link href="/css/shop-homepage.css" rel="stylesheet">
 
     <!-- Scripts -->
-    <script>
+	<script type="text/javascript" src="/fusioncharts/js/fusioncharts.js"></script>
+	<script type="text/javascript" src="/fusioncharts/js/themes/fusioncharts.theme.fint.js"></script>
+	<script>
         window.Laravel = <?php echo json_encode([
             'csrfToken' => csrf_token(),
         ]); ?>
