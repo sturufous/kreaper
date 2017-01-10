@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+<ol class="breadcrumb">
+  <li class="breadcrumb-item active">Matched: {{ Request::session()->get('artist_match') }}</li>
+  <li class="breadcrumb-item"><a href="/albumlist/{{ Request::session()->get('artist_id') }}">{{ Request::session()->get('artist_name') }}</a></li>
+  <li class="breadcrumb-item active">{{ Request::session()->get('album_name') }}</li>
+</ol>
+
 <div class="container">
     <div class="row">
         @include('layouts.sidenav')

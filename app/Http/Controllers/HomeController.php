@@ -59,6 +59,7 @@ class HomeController extends Controller
     {
 		$bandName = $request->input('bandname');
 		$bmatch = $this->music->findArtist($bandName);
+		$request->session()->put('artist_match', $bandName);
 		
 		// Filter out bands that are NOT in the MSDB
 		$filtered = [];
@@ -100,9 +101,11 @@ class HomeController extends Controller
     {
     	$artist = $this->music->getArtist($artistId);
     	$request->session()->put('artist_name', $artist->message->body->artist->artist_name);
-    	$request->session()->put('artist_rating', $artist->message->body->artist->artist_rating);
+    	$request->session()->put('artist_name', $artist->message->body->artist->artist_name);
+    	$request->session()->put('artist_id', $artistId);
     	$request->session()->put('artist_country', $artist->message->body->artist->artist_country);
     	$request->session()->put('artist_twitter', $artist->message->body->artist->artist_twitter_url);
+
     	getBandImage($this->music, $artist->message->body->artist->artist_mbid);
     	$amatch = $this->music->findAlbums($artistId);
     	 
@@ -131,6 +134,7 @@ class HomeController extends Controller
     {
     	$artist = $this->music->getAlbum($albumId);
     	$request->session()->put('album_name', $artist->message->body->album->album_name);
+    	$request->session()->put('album_id', $albumId);
     	$tmatch = $this->music->findTracks($albumId);
     	 
     	// Include only albums that are in the MSDB

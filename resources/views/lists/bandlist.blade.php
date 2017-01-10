@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+<ol class="breadcrumb">
+  <li class="breadcrumb-item active">Matched: {{ $band }}</li>
+</ol>
+
 <div class="container">
     <div class="row">
         @include('layouts.sidenav')
