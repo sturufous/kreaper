@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container" style="margin-top:20px">
     <div class="row">
         @include('layouts.sidenav')
         <div class="col-md-9">

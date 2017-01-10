@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Matched: {{ Request::session()->get('artist_match') }}</li>
+  <li class="breadcrumb-item"><a href="/albumlist/{{ Request::session()->get('artist_id') }}">{{ Request::session()->get('artist_name') }}</a></li>
+</ol>
+
 <div class="container">
     <div class="row">
         @include('layouts.sidenav')
@@ -11,10 +16,10 @@
                 </div>
                 <div class="container">
                 	<div class="row">
-						<div class="col-md-5" id="chart-container">
+						<div class="col-md-4" id="chart-container">
 							FusionCharts XT will load here!
 						</div>
-						<div class="col-md-4" id="blah-container">
+						<div class="col-md-5" id="blah-container">
 							<img src="/images/flags/{{ strtolower(Request::session()->get('artist_country')) }}.svg" class="img-rounded" style="height:46px; margin-top:15px">
 							@if (Request::session()->get('artist_twitter') != '')
                             	<a href="{{ Request::session()->get('artist_twitter') }}" target="_blank">
