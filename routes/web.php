@@ -19,8 +19,10 @@ Route::group(['middleware' => ['web','auth']], function() {
 	Route::post('bandlist', 'HomeController@bandListInMSDB');
 	Route::get('albumlist/{artist_id}', 'HomeController@albumListInMSDB');
 	Route::get('tracklist/{album_id}', 'HomeController@trackListInMSDB');
+	Route::get('showmsdblyrics/{track_id}', 'HomeController@getMSDBLyrics');
 	Route::get('showlyrics/{track_id}', 'HomeController@getLyrics');
 	Route::get('gettopten', 'HomeController@getTopTen');
+	Route::get('makewordcloud/{track_id}', 'HomeController@makeWordCloud');
 });
 
 Route::auth();

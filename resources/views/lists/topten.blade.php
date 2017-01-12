@@ -57,7 +57,7 @@
                                 <p>Genre: {{ $band->artist->primary_genres->music_genre_list[0]->music_genre->music_genre_name or 'Default'}}</a></p>
                             </div>
                             <div class="ratings">
-                                <p class="pull-right">15 reviews</p>
+                                <p class="pull-right">Country: {{ $band->artist->artist_country }}</p>
                                 <p>
                                 	{{ showGlyphs($band) }}
                                 </p>

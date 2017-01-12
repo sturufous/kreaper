@@ -3,7 +3,7 @@
 @section('content')
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Matched: {{ Request::session()->get('artist_match') }}</li>
-  <li class="breadcrumb-item"><a href="/albumlist/{{ Request::session()->get('artist_id') }}">{{ Request::session()->get('artist_name') }}</a></li>
+  <li class="breadcrumb-item">{{ Request::session()->get('artist_name') }}</li>
 </ol>
 
 <div class="container">
@@ -19,22 +19,15 @@
 						<div class="col-md-4" id="chart-container">
 							FusionCharts XT will load here!
 						</div>
-						<div class="col-md-5" id="blah-container">
-							<img src="/images/flags/{{ strtolower(Request::session()->get('artist_country')) }}.svg" class="img-rounded" style="height:46px; margin-top:15px">
-							@if (Request::session()->get('artist_twitter') != '')
-                            	<a href="{{ Request::session()->get('artist_twitter') }}" target="_blank">
-    								<img src="/images/twitter-l.png" style="width:50px; height:50px; margin-top:14px;margin-left:15px">
-    							</a>
-    						@else
-  								<img src="/images/twitter-lgrey.png" style="width:50px; height:50px; margin-top:14px;margin-left:15px">  							
-    						@endif
+						<div class="col-md-5" style="margin-top:15px">
+							<img src="{{ strtolower(Request::session()->get('artist_image')) }}" class="img-rounded small-image">
 						</div>
 					</div>
 				</div>
 		        <div>
 					<ul class="list-unstyled">
 @foreach ($data as $album)
-                            <a href="/tracklist/{{ $album->album->album_id }}" class="list-group-item" style="margin-right:20px;margin-left:20px">{{ $album->album->album_name }} <span class="pull-right">{{ showRating($album->album->album_rating, 100) }}</span></a>
+                            <a href="/tracklist/{{ $album->album->album_id }}" class="list-group-item" style="margin-right:20px;margin-left:20px">{{ $album->album->album_name }} <span class="pull-right">{{ showRating($album->album->album_rating, 100) }}</span><span class="pull-right">{{ showAlbumType($album->album->album_release_type) }}</span></a>
 @endforeach
 					</ul>
 				</div>

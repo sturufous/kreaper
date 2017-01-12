@@ -153,12 +153,12 @@ class MusixmatchMusicRepository implements MusicRepository {
 	 * @return boolean
 	 */
 	
-	public function isTrackInMSDB($artistMbid, $trackName)
+	public function isTrackInMSDB($artistName, $trackName)
 	{
-		if($artistMbid != '' && $trackName != '')
+		if($artistName != '' && $trackName != '')
 		{
 			$songs = new MSDBSongs();
-			$matching = $songs->where('artist_mbid', $artistMbid)->where('title', $trackName)->get()->count();
+			$matching = $songs->where('artist_name', $artistName)->where('title', $trackName)->get()->count();
 			return $matching > 0 ? true : false;
 		}
 		else
