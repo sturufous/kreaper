@@ -16,7 +16,7 @@
 		        <div>
 					<ul class="list-unstyled">
 @foreach ($data as $band)
-                            <a href="/albumlist/{{ $band->artist->artist_id }}" class="list-group-item" style="margin-right:20px;margin-left:20px" alt="{{ $band->artist->artist_mbid }}">{{ $band->artist->artist_name }} <span class="pull-right">{{$band->artist->artist_id}}</span></a>
+                            <a href="/albumlist/{{ $band->artist->artist_id }}" class="list-group-item" style="margin-right:20px;margin-left:20px;margin-top:0;height:65px" alt="{{ $band->artist->artist_mbid }}">{{ $band->artist->artist_name }} <span class="pull-right"><img src="/images/flags/{{ strtolower($band->artist->artist_country) }}.svg" class="img-rounded" style="height:46px"></span></a>
 @endforeach
 					</ul>
 				</div>

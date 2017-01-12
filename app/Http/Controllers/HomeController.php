@@ -7,6 +7,7 @@ use Storage\MusixmatchMusicRepository;
 use Storage\MusicRepository as Music;
 use Storage\ImageRepository as Images;
 use Storage\FantvImageRepository;
+use App\MSDBSongs;
 
 class HomeController extends Controller
 {
@@ -67,6 +68,8 @@ class HomeController extends Controller
 		{
 			if($this->music->isArtistInMSDB($band->artist->artist_mbid))
 			{
+				$country = $band->artist->artist_country == '' ? 'blank' : $band->artist->artist_country;
+				$band->artist->artist_country = $country;
 				$filtered[] = $band;
 			}
 		}
@@ -100,26 +103,35 @@ class HomeController extends Controller
     public function albumListInMSDB(Request $request, $artistId)
     {
     	$artist = $this->music->getArtist($artistId);
-    	$request->session()->put('artist_name', $artist->message->body->artist->artist_name);
+    	if($artist->message->body->artist->artist_mbid == '')
+    	{
+    		$request->session()->put('artist_album_count', 0);
+    		return view('lists.albumlist')->with(['data' => []]);
+    	}
+    	
+    	$request->session()->put('artist_rating', $artist->message->body->artist->artist_rating);
     	$request->session()->put('artist_name', $artist->message->body->artist->artist_name);
     	$request->session()->put('artist_id', $artistId);
-    	$request->session()->put('artist_country', $artist->message->body->artist->artist_country);
     	$request->session()->put('artist_twitter', $artist->message->body->artist->artist_twitter_url);
-
-    	getBandImage($this->music, $artist->message->body->artist->artist_mbid);
+    	$request->session()->put('artist_twitter', $artist->message->body->artist->artist_twitter_url);
+    	$country = $artist->message->body->artist->artist_country == '' ? 'blank' : $artist->message->body->artist->artist_country;
+    	$request->session()->put('artist_country', $country);
+    	 
+    	$image = getBandImage($this->music, $artist->message->body->artist->artist_mbid);
+    	$request->session()->put('artist_image', $image);
     	$amatch = $this->music->findAlbums($artistId);
     	 
     	// Include only albums that are in the MSDB
     	$filtered = [];
-    	foreach($amatch->message->body->album_list as $album)
-    	{
-    		if($this->music->isAlbumInMSDB($artist->message->body->artist->artist_mbid, $album->album->album_name))
-    		{
-    			$filtered[] = $album;
-    		}
-    	}
-    	$request->session()->put('artist_album_count', sizeof($filtered));
-    	return view('lists.albumlist')->with(['data' => $filtered]);
+	    foreach($amatch->message->body->album_list as $album)
+	    {
+	    	if($this->music->isAlbumInMSDB($artist->message->body->artist->artist_mbid, $album->album->album_name))
+	    	{
+	    		$filtered[] = $album;
+	    	}
+	    }
+	    $request->session()->put('artist_album_count', sizeof($filtered));
+	    return view('lists.albumlist')->with(['data' => $filtered]);
     }
     
     /**
@@ -132,21 +144,32 @@ class HomeController extends Controller
     
     public function trackListInMSDB(Request $request, $albumId)
     {
-    	$artist = $this->music->getAlbum($albumId);
-    	$request->session()->put('album_name', $artist->message->body->album->album_name);
+    	$album = $this->music->getAlbum($albumId);
+    	$request->session()->put('album_name', $album->message->body->album->album_name);
     	$request->session()->put('album_id', $albumId);
+    	
+    	$artistName = $album->message->body->album->artist_name;
+    	$title = $album->message->body->album->album_name;
+    	
     	$tmatch = $this->music->findTracks($albumId);
+    	//$songs = new MSDBSongs();
+    	//$msdbMatch = $songs->where('artist_name', '=', $artistName)->where('release', '=', $title)->get();
     	 
-    	// Include only albums that are in the MSDB
-    	$filtered = [];
+    	// Include only tracks that are in the MSDB
+    	$msdbTracks = [];
+    	$nonMsdbTracks =[];
     	foreach($tmatch->message->body->track_list as $track)
     	{
-    		if($this->music->isTrackInMSDB($track->track->artist_mbid, $track->track->track_name))
+    		if($this->music->isTrackInMSDB($track->track->artist_name, $track->track->track_name))
     		{
-    			$filtered[] = $track;
+    			$msdbTracks[] = $track;
+    		}
+    		else
+    		{
+    			$nonMsdbTracks[] = $track;
     		}
     	}
-    	return view('lists.tracklist')->with(['data' => $filtered]);
+    	return view('lists.tracklist')->with(['msdb_tracks' => $msdbTracks, 'non_msdb_tracks' => $nonMsdbTracks]);
     }
     
     /**
@@ -187,7 +210,7 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     
-    public function getLyrics(Request $request, $trackId)
+    public function getMSDBLyrics(Request $request, $trackId)
     {
     	$track = $this->music->getTrack($trackId);
 
@@ -197,10 +220,54 @@ class HomeController extends Controller
 		$hotness = intval($MSDBSong->artist_hotttnesss * 100);
 		$request->session()->put('artist_familiarity', $familiarity);
 		$request->session()->put('artist_hotttnesss', $hotness);
+		$request->session()->put('track_id', $trackId);
 		
 		$request->session()->put('track_name', $track->message->body->track->track_name);
     	$lmatch = $this->music->getLyrics($trackId);
-    	$lfixed = str_replace(["\r\n", "\r", "\n"], "<br/>", $lmatch->message->body->lyrics->lyrics_body);
+    	
+    	if(count($lmatch->message->body) == 0) {
+    		$lfixed = '';
+    	}
+    	else {
+    		$lfixed = str_replace(["\r\n", "\r", "\n"], "<br/>", $lmatch->message->body->lyrics->lyrics_body);	
+    	}
+    	
     	return view('lists.lyrics')->with(['data' => $lfixed]);
     }
-}
+    
+    public function getLyrics(Request $request, $trackId)
+    {
+    	$track = $this->music->getTrack($trackId);
+    
+    	// Get the rating data for the song for display above lyrics
+    	$song = $this->music->getLyrics($trackId);
+    	$request->session()->put('artist_familiarity', 0);
+    	$request->session()->put('artist_hotttnesss', 0);
+    	$request->session()->put('track_id', $trackId);
+    	 
+    	$request->session()->put('track_name', $track->message->body->track->track_name);
+    	$lmatch = $this->music->getLyrics($trackId);
+    	 
+    	if(count($lmatch->message->body) == 0) {
+    		$lfixed = '';
+    	}
+    	else {
+    		$lfixed = str_replace(["\r\n", "\r", "\n"], "<br/>", $lmatch->message->body->lyrics->lyrics_body);
+    	}
+    	 
+    	return view('lists.lyrics')->with(['data' => $lfixed]);
+    }
+    
+    public function makeWordcloud(Request $request, $trackId)
+    {
+    	$lyrics = $this->music->getLyrics($trackId);
+    	if(isset($lyrics->message->body->lyrics->lyrics_body))
+    	{
+    		return view('wordcloud')->with(['data' => $lyrics->message->body->lyrics->lyrics_body]);
+    	}
+    	else 
+    	{
+    		return view('wordcloud')->with(['data' => 'No No No No No Lyrics for this song']);
+    	}
+    }
+ }

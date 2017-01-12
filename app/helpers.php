@@ -46,18 +46,20 @@ function showRating($level, $max)
 	$red = $level > 75 ? $level - 75 : 0;
 	$yellow = $level > 50 && $level <= 75 ? $level - 50 : (25 * ($red > 0));
 
-	if($level)
+	echo '<div class="progress" style="width:100px">';
+	echo '<div class="progress-bar progress-bar-success" role="progressbar" style="width:' . $green . '%"></div>';
+	if($yellow)
 	{
-		echo '<div class="progress" style="width:100px">';
-		echo '<div class="progress-bar progress-bar-success" role="progressbar" style="width:' . $green . '%"></div>';
-		if($yellow)
-		{
-			echo '<div class="progress-bar progress-bar-warning" role="progressbar" style="width:' . $yellow . '%"></div>';
-		}
-		if($red)
-		{
-			echo '<div class="progress-bar progress-bar-danger" role="progressbar" style="width:' . $red . '%"></div>';
-		}
-		echo '</div>';
+		echo '<div class="progress-bar progress-bar-warning" role="progressbar" style="width:' . $yellow . '%"></div>';
 	}
+	if($red)
+	{
+		echo '<div class="progress-bar progress-bar-danger" role="progressbar" style="width:' . $red . '%"></div>';
+	}
+	echo '</div>';
+}
+	
+function showAlbumType($type)
+{
+	return $type . '&nbsp;&nbsp;&nbsp;';
 }
