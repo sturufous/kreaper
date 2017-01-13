@@ -15,7 +15,7 @@ class AddMbidSongsIndex extends Migration
     {
     	Schema::table('songs', function (Blueprint $table) {
     		$table->index('artist_mbid');
-    	});
+    });
     		 //
     }
 

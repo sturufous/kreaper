@@ -14,7 +14,7 @@
         <div class="col-md-9">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                	<h2><a href="/makewordcloud/{{ Request::session()->get('track_id') }}">{{ Request::session()->get('track_name') }}</a></h2>
+                	<h2>{{ Request::session()->get('track_name') }}<span class="pull-right"><a href="/makewordcloud/{{ Request::session()->get('track_id') }}"><img src="/images/wordcloud.png" class="img-rounded" style="width:60px;top:-10px;position:relative;border: 1px solid grey"></a></span></h2>
                 </div>
                 <div class="container">
                 	<div class="row">
