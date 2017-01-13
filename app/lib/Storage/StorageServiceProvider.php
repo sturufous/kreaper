@@ -3,6 +3,12 @@ namespace Storage;
 
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Register service providers for the Musixmatch and FanTV APIs
+ * 
+ * @author stuartmorse
+ */
+
 class StorageServiceProvider extends ServiceProvider {
 
 	public function register()

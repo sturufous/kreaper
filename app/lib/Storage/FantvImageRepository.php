@@ -1,6 +1,12 @@
 <?php
 namespace Storage;
 
+/**
+ * Repository pattern class that provides access to the FanartTV API. This accesses
+ * information about an Artist, but the only infomation used currently is the picture of the
+ * band. 
+ */
+
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 
@@ -9,6 +15,15 @@ const FANTV_API_KEY = '6abd83073a4f27f45859311709196f40';
 const FANTV_IMAGE_DIR = '/home/vagrant/kreaper/public/images/bands/';
 
 class FantvImageRepository implements ImageRepository {
+	
+/**
+ * Invoke the FanTV API function identified by the $apiFunction argument.
+ *
+ * @param $method The HTTP method to use for the API call
+ * @param $apiFunction The API function string for the current call
+ * @param $args The query string arguments to send to the API
+ * @return a JSON object retrieved from the API
+ */
 	
 	private function invoke($method, $apiFunction, $args)
 	{
@@ -35,6 +50,14 @@ class FantvImageRepository implements ImageRepository {
 		return $jsonObj;
 	}
 	
+/**
+ * Retrieve the artist in the FanTV database that matches the MusicBrainz ID
+ *
+ * @param $mbid The MusicBrainz id for the artist
+ * @see \Storage\MusicRepository::findArtist()
+ * @return Data regarding the artist in JSON format
+ */
+	
 	public function findArtist($mbid)
 	{
 		try 
@@ -48,6 +71,13 @@ class FantvImageRepository implements ImageRepository {
 		}
 	}
 	
+/**
+ * Saves the image for the artist identified by $mbid to local storage.
+ * 
+ * @param $imageUrl The default image URL
+ * @param $mbid The MusicBrainz ID of the artist being queried
+ * @see \Storage\ImageRepository::saveImageLocal()
+ */
 	public function saveImageLocal($imageUrl, $mbid)
 	{
 		try
@@ -61,9 +91,10 @@ class FantvImageRepository implements ImageRepository {
 				$path_parts = pathinfo($imageUrl);
 				$ext = strtolower($path_parts["extension"]);
 				
+				// Create a new Guzzle client for use in retrieving the image URL
 				$client = new Client();
 				$response = $client->request('GET', $imageUrl, ['connect_timeout' => 10]);
-				if ($this->isGoodResponse($response)) 
+				if (isGoodResponse($response)) 
 				{
 					$this->saveBandImage($mbid, $ext, $response);
 				}
@@ -77,6 +108,14 @@ class FantvImageRepository implements ImageRepository {
 		}
 	}
 	
+/**
+ * Save an artist image to the FanTV image directory.
+ * 
+ * @param $mbid MusicBrainz ID for the artist, used as the file name
+ * @param $ext File extension of the image
+ * @param $response The data passed back from the FanTV API in JSON format
+ */
+	
 	public function saveBandImage($mbid, $ext, $response)
 	{
 		$fileName = FANTV_IMAGE_DIR.$mbid.'.'.$ext;
@@ -85,6 +124,13 @@ class FantvImageRepository implements ImageRepository {
 			file_put_contents(FANTV_IMAGE_DIR.$mbid.'.'.$ext, $response->getBody());
 		}
 	}
+	
+/**
+ * Checks the response to see if it is valid.
+ * 
+ * @param $response The response to be evaluated
+ * @return boolean The validity of the response
+ */
 	
 	public function isGoodResponse($response)
 	{
