@@ -280,4 +280,28 @@ class MusixmatchMusicRepository implements MusicRepository {
 			return false;
 		}
 	}
+	
+/**
+ * Given an artist name and track name this function determines if this track is represented in 
+ * the MSDB Lyrics file.
+ *
+ * @param $artistName The name of the artist
+ * @param trackName The name of the track
+ * @see \Storage\MusicRepository::getTrackEchonest()
+ * @return Boolean indicating whether the track is represented in the MSDB
+ */
+	
+	public function doesTrackHaveMSDBLyrics($artistName, $trackName)
+	{
+		if($artistName != '' && $trackName != '')
+		{
+			$songs = new MSDBSongs();
+			$matching = $songs->where('artist_name', $artistName)->where('title', $trackName)->get()->count();
+			return $matching > 0 ? true : false;
+		}
+		else
+		{
+			return false;
+		}
+	}
 }

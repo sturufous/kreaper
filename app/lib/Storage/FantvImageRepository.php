@@ -94,7 +94,7 @@ class FantvImageRepository implements ImageRepository {
 				// Create a new Guzzle client for use in retrieving the image URL
 				$client = new Client();
 				$response = $client->request('GET', $imageUrl, ['connect_timeout' => 10]);
-				if (isGoodResponse($response)) 
+				if ($this->isGoodResponse($response)) 
 				{
 					$this->saveBandImage($mbid, $ext, $response);
 				}

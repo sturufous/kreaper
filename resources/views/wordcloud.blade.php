@@ -1,23 +1,23 @@
 <!DOCTYPE html>
+<head>
 <meta charset="utf-8">
 <title>Word Cloud Generator</title>
 <style>
 body {
-  position: relative;
   font-family: "Helvetica Neue", sans-serif;
-  width: 960px;
-  margin: auto;
+  width:100%;
   margin-bottom: 1em;
   margin-top: 20px;
+  margin-left: 30px;
 }
 #presets a { border-left: solid #666 1px; padding: 0 10px; }
 #presets a.first { border-left: none; }
 #keyword { width: 300px; }
 #fetcher { width: 500px; }
 #keyword, #go { font-size: 1.5em; }
-#text { width: 100%; height: 100px; }
+#text { width: 100%; height: 100px;}
 p.copy { font-size: small; }
-#form { font-size: small; position: relative; }
+#form { font-size: small; position: relative; margin-left:30px; margin-right:30px}
 hr { border: none; border-bottom: solid #ccc 1px; }
 a.active { text-decoration: none; color: #000; font-weight: bold; cursor: text; }
 #angles line, #angles path, #angles circle { stroke: #666; }
@@ -27,14 +27,21 @@ a.active { text-decoration: none; color: #000; font-weight: bold; cursor: text; 
 #angles input, #max { width: 42px; }
 </style>
 
-<div id="vis"></div>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+</head>
+<body>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item active">Matched: {{ Request::session()->get('artist_match') }}</li>
+  <li class="breadcrumb-item"><a href="/albumlist/{{ Request::session()->get('artist_id') }}">{{ Request::session()->get('artist_name') }}</a></li>
+  <li class="breadcrumb-item"><a href="/tracklist/{{ Request::session()->get('album_id') }}">{{ Request::session()->get('album_name') }}</a></li>
+  <li class="breadcrumb-item active">{{ Request::session()->get('track_name') }}</li>
+</ol>
+
+<div id="vis" style="display:block;padding-left:100px"></div>
 
 <form id="form">
 
-<p style="position: absolute; right: 0; top: 0" id="status"></p>
-
-<div style="text-align: center">
-  <div id="presets"></div>
+<div style="text-align: center; margin-left:30px;">
   <div id="custom-area">
     <p><textarea hidden id="text">
 		{!! $data !!}
@@ -78,8 +85,6 @@ a.active { text-decoration: none; color: #000; font-weight: bold; cursor: text; 
 
 </form>
 
-<ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px;margin-left:116px" data-ad-client="ca-pub-2911491153890039" data-ad-slot="2029654015"></ins>
-
 <script src="/js/d3.min.js"></script>
 <script src="/js/cloud.min.js"></script>
-
+</body>

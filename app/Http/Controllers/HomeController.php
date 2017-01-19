@@ -220,17 +220,32 @@ class HomeController extends Controller
     
     public function getMSDBLyrics(Request $request, $trackId)
     {
-    	$track = $this->music->getTrack($trackId);
+    	$track = $this->music->getTrack($trackId)->message->body->track;
 
     	// Get the rating data for the song for display above lyrics
-    	$MSDBSong = $this->music->getMSDBSong($track->message->body->track->artist_mbid, $track->message->body->track->track_name);
+    	$MSDBSong = $this->music->getMSDBSong($track->artist_mbid, $track->track_name);
+
+    	// Get the wordcounts for the current song from the MSDB
+    	$wordCounts = $MSDBSong->lyrics;
+		
+		// If there are no lyrics in the MSDB default to the lyrics retrieved from
+		// the Musixmatch API - see makeWordCloud()
+		if($wordCounts->count() == 0)
+		{
+			$request->session()->forget('word_counts');
+		}
+		else 
+		{
+			$request->session()->put('word_counts', $wordCounts);	
+		}
+		
     	$familiarity = intval($MSDBSong->artist_familiarity * 100);
 		$hotness = intval($MSDBSong->artist_hotttnesss * 100);
 		$request->session()->put('artist_familiarity', $familiarity);
 		$request->session()->put('artist_hotttnesss', $hotness);
 		$request->session()->put('track_id', $trackId);
 		
-		$request->session()->put('track_name', $track->message->body->track->track_name);
+		$request->session()->put('track_name', $track->track_name);
     	$lmatch = $this->music->getLyrics($trackId);
     	
     	if(count($lmatch->message->body) == 0) {
@@ -255,9 +270,12 @@ class HomeController extends Controller
     public function getLyrics(Request $request, $trackId)
     {
     	$track = $this->music->getTrack($trackId);
+    	
+    	// Ensure lyrics from MusixMatch API are displayed in the word clout, 
+    	// not the ones from previous MSDB match
+    	$request->session()->forget('word_counts');
     
     	// Get the rating data for the song for display above lyrics
-    	$song = $this->music->getLyrics($trackId);
     	$request->session()->put('artist_familiarity', 0);
     	$request->session()->put('artist_hotttnesss', 0);
     	$request->session()->put('track_id', $trackId);
@@ -277,6 +295,7 @@ class HomeController extends Controller
     	 
     	return view('lists.lyrics')->with(['data' => $lfixed]);
     }
+    
 /**
  * Take the lyrics for the song identified by $trackId and inject them into the wordcloud view.
  * This will draw a visualization of the song where the words are scaled based on their frequency.
@@ -289,6 +308,13 @@ class HomeController extends Controller
     public function makeWordcloud(Request $request, $trackId)
     {
     	$lyrics = $this->music->getLyrics($trackId);
+    	$wordCounts = $request->session()->get('word_counts', null);
+    	if(isset($wordCounts))
+    	{
+    		$data = lyricsFromWordCounts($request);
+    		return view('wordcloud')->with(['data' => $data]);
+    	}
+    	else
     	if(isset($lyrics->message->body->lyrics->lyrics_body))
     	{
     		return view('wordcloud')->with(['data' => $lyrics->message->body->lyrics->lyrics_body]);

@@ -98,3 +98,33 @@ function showAlbumType($type)
 {
 	return $type . '&nbsp;&nbsp;&nbsp;';
 }
+
+/**
+ * Get the word counts for the current track and generate a document for display.
+ * Each line of the document will contain a single word repeated by the number of times
+ * it appears in the track. This will be interpreted by the word cloud software as if
+ * it were processing the lyrics of the song itself. The difference is that the lyrics
+ * in the MSDB are stemmed words.
+ * 
+ * @param $request The current HTTP request
+ * @return string A document created dynamically for display as a Word Cloud
+ */
+
+function lyricsFromWordCounts($request)
+{
+	$wordCounts = $request->session()->get('word_counts');
+	$lyrics = '';
+	
+	// For each word used in the track, create individual lines containing that word
+	// repeated by the number of times it appears in the track
+	foreach($wordCounts as $word)
+	{
+		for($idx=0;$idx<$word->count;$idx++)
+		{
+			$lyrics .= $word->word . ' ';
+		}
+		$lyrics .= "\n";
+	}
+	
+	return $lyrics;
+}
