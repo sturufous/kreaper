@@ -22,5 +22,10 @@ class StorageServiceProvider extends ServiceProvider {
 			'Storage\ImageRepository',
 			'Storage\FantvImageRepository'
 		);
-	}
+		
+		$this->app->bind(
+				'Storage\MSDBRepository',
+				'Storage\MSDBMusicRepository'
+				);
+		}
 }

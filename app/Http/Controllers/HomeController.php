@@ -8,9 +8,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Storage\MusixmatchMusicRepository;
 use Storage\MusicRepository as Music;
 use Storage\ImageRepository as Images;
+use Storage\MSDBMusicRepository as MSDB;
 use Storage\FantvImageRepository;
 use App\MSDBSongs;
 
@@ -18,6 +18,7 @@ class HomeController extends Controller
 {
 	private $music;
 	private $images;
+	private $MSDB;
 	
 /**
  * Create a new controller instance.
@@ -25,10 +26,11 @@ class HomeController extends Controller
  * @return void
  */
 	
-	public function __construct(Music $music, Images $images)
+	public function __construct(Music $music, Images $images, MSDB $MSDB)
 	{
 		$this->music = $music;
 		$this->images = $images;
+		$this->MSDB = $MSDB;
         $this->middleware('auth');
 	}
 	
@@ -73,7 +75,7 @@ class HomeController extends Controller
 		$filtered = [];
 		foreach($bmatch->message->body->artist_list as $band)
 		{
-			if($this->music->isArtistInMSDB($band->artist->artist_mbid))
+			if($this->MSDB->isArtistInMSDB($band->artist->artist_mbid))
 			{
 				$country = $band->artist->artist_country == '' ? 'blank' : $band->artist->artist_country;
 				$band->artist->artist_country = $country;
@@ -168,7 +170,7 @@ class HomeController extends Controller
     	$nonMsdbTracks =[];
     	foreach($tmatch->message->body->track_list as $track)
     	{
-    		if($this->music->isTrackInMSDB($track->track->artist_name, $track->track->track_name))
+    		if($this->MSDB->isTrackInMSDB($track->track->artist_name, $track->track->track_name))
     		{
     			$msdbTracks[] = $track;
     		}
@@ -223,7 +225,7 @@ class HomeController extends Controller
     	$track = $this->music->getTrack($trackId)->message->body->track;
 
     	// Get the rating data for the song for display above lyrics
-    	$MSDBSong = $this->music->getMSDBSong($track->artist_mbid, $track->track_name);
+    	$MSDBSong = $this->MSDB->getMSDBSong($track->artist_mbid, $track->track_name);
 
     	// Get the wordcounts for the current song from the MSDB
     	$wordCounts = $MSDBSong->lyrics;
